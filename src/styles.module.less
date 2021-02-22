@@ -1,0 +1,66 @@
+:global {
+    html {
+        color: #454545;
+        scroll-behavior: smooth;
+        font: normal normal normal 16px/1.6 BlinkMacSystemFont, -apple-system, Roboto, Helvetica Neue, Helvetica, Arial,
+            sans-serif;
+        // font-family: BlinkMacSystemFont, -apple-system, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    html,
+    body {
+        height: 100%;
+        width: 100%;
+    }
+
+    body {
+        font-size: 30px;
+        /* prettier-ignore */
+        // max-width: 750PX;
+        // margin: 0 auto;
+    }
+
+    code {
+        font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+        font-size: 0.9em;
+        word-break: break-word;
+    }
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    ::selection {
+        background: rgba(255, 235, 20, 0.7);
+        color: #111;
+    }
+
+    // Remove figure margin
+    figure {
+        margin: 0 auto;
+    }
+
+    html:root {
+        /* prettier-ignore */
+        font-size: 50PX;
+        font-size: 13.33333333vw;
+        // font-size: (100vw / 750) * 100;
+    }
+    @media screen and (min-width: 750px) {
+        html:root {
+            /* prettier-ignore */
+            font-size: 100PX; // MUST BE PX
+        }
+    }
+    // 横屏
+    @media screen and (orientation: landscape) and (min-width: 750px) {
+        html:root {
+            /* prettier-ignore */
+            font-size: 75PX;
+        }
+    }
+}

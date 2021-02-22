@@ -1,0 +1,35 @@
+.navBar {
+    position: fixed;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+}
+
+div.drawer {
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 750px;
+    width: 100%;
+    :global {
+        .am-drawer-sidebar {
+            padding-top: 105px;
+            min-width: 60%;
+            background: rgb(255, 255, 255);
+        }
+        .am-drawer-content {
+            padding-top: 100px;
+        }
+    }
+}
+
+:global {
+    .am-list-item.active {
+        & > .am-list-line > .am-list-content {
+            color: #108ee9;
+        }
+    }
+}
