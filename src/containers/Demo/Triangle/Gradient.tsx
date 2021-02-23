@@ -24,11 +24,14 @@ const vertexShader = `
 // 片元着色器
 const fragmentShader = `
     precision mediump float;  // 设置浮点数精度
-    varying vec4 v_color;
+    varying vec4 v_color; 
     void main () {
         gl_FragColor = v_color;
     }
 `;
+
+// 需要a_color这个变量进行插值处理。
+// 在片元着色器中必须定义一个相同名称的变量，这样在片元着色器中就可以直接使用插值后的值了。
 
 function render(gl: WebGLRenderingContext) {
     // 初始化shader程序

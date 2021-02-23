@@ -9,6 +9,7 @@ import HelloWorld from './HelloWorld';
 import Point from './Point';
 import Line from './Line';
 import Triangle from './Triangle';
+import Texture from './Texture';
 
 const ROUTES = [
     {
@@ -35,6 +36,11 @@ const ROUTES = [
         name: 'Triangle',
         route: '/demo/triangle',
         component: <Triangle />,
+    },
+    {
+        name: 'Texture',
+        route: '/demo/texture',
+        component: <Texture />,
     },
 ];
 
