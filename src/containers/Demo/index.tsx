@@ -7,6 +7,7 @@ import styles from './styles.module.less';
 
 import HelloWorld from './HelloWorld';
 import Point from './Point';
+import Line from './Line';
 import Triangle from './Triangle';
 
 const ROUTES = [
@@ -24,6 +25,11 @@ const ROUTES = [
         name: 'Point',
         route: '/demo/point',
         component: <Point />,
+    },
+    {
+        name: 'Line',
+        route: '/demo/line',
+        component: <Line />,
     },
     {
         name: 'Triangle',
