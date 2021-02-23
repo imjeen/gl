@@ -6,6 +6,7 @@ import { NavBar, Icon, Drawer, List } from 'antd-mobile';
 import styles from './styles.module.less';
 
 import HelloWorld from './HelloWorld';
+import Point from './Point';
 
 const ROUTES = [
     {
@@ -17,6 +18,11 @@ const ROUTES = [
         name: 'hello-world',
         route: '/demo/hello-world',
         component: <HelloWorld />,
+    },
+    {
+        name: 'Point',
+        route: '/demo/point',
+        component: <Point />,
     },
 ];
 
