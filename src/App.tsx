@@ -3,6 +3,7 @@ import { Route, HashRouter } from 'react-router-dom';
 
 import Home from '@/containers/Home';
 import Demo from '@/containers/Demo';
+import Draw from '@/containers/Draw';
 
 function App() {
     return (
@@ -13,6 +14,9 @@ function App() {
                 </Route>
                 <Route path="/demo">
                     <Demo />
+                </Route>
+                <Route path="/draw">
+                    <Draw />
                 </Route>
             </HashRouter>
         </>
