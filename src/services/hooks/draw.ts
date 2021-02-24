@@ -5,6 +5,20 @@ type Coordinate = {
     y: number;
 };
 
+/**
+ * 画线条
+ *
+ * @param {React.RefObject<HTMLCanvasElement>} canvasRef - canvas 引用
+ * @param {({
+ *         strokeStyle: string | CanvasGradient | CanvasPattern;
+ *         lineJoin: CanvasLineJoin;
+ *         lineWidth: number;
+ *     })} [options={
+ *         strokeStyle: 'red',
+ *         lineJoin: 'round',
+ *         lineWidth: 5,
+ *     }] - 线条格式选项
+ */
 export function useLine(
     canvasRef: React.RefObject<HTMLCanvasElement>,
     options: {
@@ -21,12 +35,17 @@ export function useLine(
     const [mousePosition, setMousePosition] = useState<Coordinate>();
 
     const getCoordinates = useCallback(
-        (event: MouseEvent) => {
+        (event: MouseEvent | TouchEvent) => {
             const canvas = canvasRef.current;
             if (!canvas) return;
-            const { pageX, pageY } = event;
+
+            const { clientX, clientY } = (event as TouchEvent).changedTouches
+                ? (event as TouchEvent).changedTouches[0] // use first touch
+                : (event as MouseEvent);
+            // const { clientX, clientY } = event as MouseEvent;
             const { offsetLeft, offsetTop } = canvas;
-            return { x: pageX - offsetLeft, y: pageY - offsetTop };
+            
+            return { x: clientX - offsetLeft, y: clientY - offsetTop };
         },
         [canvasRef],
     );
@@ -51,18 +70,20 @@ export function useLine(
         [canvasRef, options],
     );
 
-    const paintStart = useCallback(
-        (event: MouseEvent) => {
+    const handleStart = useCallback(
+        (event: MouseEvent | TouchEvent) => {
+            event.preventDefault();
+            setIsPainting(true);
             const coordinates = getCoordinates(event);
             if (!coordinates) return;
             setMousePosition(coordinates);
-            setIsPainting(true);
         },
         [getCoordinates],
     );
 
-    const painting = useCallback(
-        (event: MouseEvent) => {
+    const handleMove = useCallback(
+        (event: MouseEvent | TouchEvent) => {
+            event.preventDefault();
             if (!isPainting || !mousePosition) return;
 
             const newCoordinates = getCoordinates(event);
@@ -73,7 +94,8 @@ export function useLine(
         },
         [drawLine, getCoordinates, isPainting, mousePosition],
     );
-    const paintEnd = useCallback(() => {
+    const handleEnd = useCallback((event: MouseEvent | TouchEvent) => {
+        event.preventDefault();
         setIsPainting(false);
         setMousePosition(undefined);
     }, []);
@@ -82,15 +104,27 @@ export function useLine(
         const el = canvasRef.current;
         if (!el) return;
 
-        el.addEventListener('mousedown', paintStart);
-        el.addEventListener('mousemove', painting);
-        el.addEventListener('mouseup', paintEnd);
-        el.addEventListener('mouseleave', paintEnd);
+        el.addEventListener('mousedown', handleStart);
+        el.addEventListener('mousemove', handleMove);
+        el.addEventListener('mouseup', handleEnd);
+        el.addEventListener('mouseleave', handleEnd);
+
+        // add touch events
+        el.addEventListener('touchstart', handleStart);
+        el.addEventListener('touchmove', handleMove);
+        el.addEventListener('touchend', handleEnd);
+        el.addEventListener('touchcancel', handleEnd);
+
         return () => {
-            el.removeEventListener('mousedown', paintStart);
-            el.removeEventListener('mousemove', painting);
-            el.removeEventListener('mouseup', paintEnd);
-            el.removeEventListener('mouseleave', paintEnd);
+            el.removeEventListener('mousedown', handleStart);
+            el.removeEventListener('mousemove', handleMove);
+            el.removeEventListener('mouseup', handleEnd);
+            el.removeEventListener('mouseleave', handleEnd);
+            // remove touch events
+            el.removeEventListener('touchstart', handleStart);
+            el.removeEventListener('touchmove', handleMove);
+            el.removeEventListener('touchend', handleEnd);
+            el.removeEventListener('touchcancel', handleEnd);
         };
-    }, [canvasRef, paintEnd, paintStart, painting]);
+    }, [canvasRef, handleEnd, handleStart, handleMove]);
 }
