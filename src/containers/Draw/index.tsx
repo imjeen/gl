@@ -2,6 +2,9 @@ import React, { useRef } from 'react';
 
 import { useLine } from '@/services/hooks/draw';
 
+const WIDTH = window.innerWidth,
+    HEIGHT = window.innerHeight;
+
 export default function Draw() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -9,7 +12,7 @@ export default function Draw() {
 
     return (
         <>
-            <canvas ref={canvasRef} width={window.innerWidth} height={window.innerHeight} />
+            <canvas ref={canvasRef} width={WIDTH} height={HEIGHT} />
         </>
     );
 }
