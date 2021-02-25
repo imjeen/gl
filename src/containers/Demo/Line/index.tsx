@@ -20,8 +20,7 @@ const vertexShader = `
 `;
 // 片元着色器
 const fragmentShader = `
-    // 设置浮点数精度
-    precision mediump float;
+    precision mediump float; // 设置浮点数精度
     void main () {
         // vec4 是表示四维向量，这里用来表示RGBA的值[0~1]，均为浮点数，如为整数则会报错
         gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);

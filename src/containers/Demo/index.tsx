@@ -10,6 +10,8 @@ import Point from './Point';
 import Line from './Line';
 import Triangle from './Triangle';
 import Texture from './Texture';
+import Coordinate from './Coordinate';
+import Cube from './Cube';
 
 const ROUTES = [
     {
@@ -41,6 +43,16 @@ const ROUTES = [
         name: 'Texture',
         route: '/demo/texture',
         component: <Texture />,
+    },
+    {
+        name: 'Coordinate',
+        route: '/demo/coordinate',
+        component: <Coordinate />,
+    },
+    {
+        name: 'Cube',
+        route: '/demo/cube',
+        component: <Cube />,
     },
 ];
 
