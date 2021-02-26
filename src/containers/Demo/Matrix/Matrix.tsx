@@ -26,11 +26,7 @@ function drawNormalF(gl: WebGLRenderingContext) {
         attribute vec2 a_position;
         uniform vec2 u_resolution; // 设置全局变量：画布的分辨率
         void main () {
-            vec2 zeroToOne = a_position / u_resolution; // 从像素坐标转换到 0.0 到 1.0
-            vec2 zeroToTwo = zeroToOne * 2.0; // 再把 0->1 转换 0->2
-            vec2 clipSpace = zeroToTwo - 1.0; // 把 0->2 转换到 -1->+1 (裁剪空间)
-
-            // gl_Position = vec4(clipSpace, 0, 1); // 左下角为原点，翻转Y轴等到以下
+            vec2 clipSpace =  (a_position / u_resolution) * 2.0 - 1.0;
             gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1); // 左上角为原点
         }  
     `;
@@ -101,9 +97,7 @@ function drawTranslateF(gl: WebGLRenderingContext) {
         void main () {
             vec2 position = (u_matrix * vec3(a_position, 1)).xy; // 将位置乘以矩阵
 
-            vec2 zeroToOne = position / u_resolution; // 从像素坐标转换到 0.0 到 1.0
-            vec2 zeroToTwo = zeroToOne * 2.0; // 再把 0->1 转换 0->2
-            vec2 clipSpace = zeroToTwo - 1.0; // 把 0->2 转换到 -1->+1 (裁剪空间)
+            vec2 clipSpace =  (position / u_resolution) * 2.0 - 1.0;
             gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1); // 左上角为原点
         }  
     `;

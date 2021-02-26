@@ -1,12 +1,15 @@
 import React from 'react';
 
-import PureTriangle from './Triangle';
+import TriangleBase from './Triangle';
+import Matrix from './Matrix';
 
 export default function Triangle() {
     return (
         <>
             <h2>三角形：使用屏幕像素坐标</h2>
-            <PureTriangle />
+            <TriangleBase />
+            <h2>矩阵转化方式：使用屏幕像素坐标</h2>
+            <Matrix />
         </>
     );
 }

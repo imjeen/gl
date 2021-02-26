@@ -3,7 +3,8 @@ import React from 'react';
 import Translation from './Translation';
 import Rotation from './Rotation';
 import Scaling from './Scale';
-import Matrix from "./Matrix";
+import Matrix from './Matrix';
+import Matrix3D from './Matrix3D';
 
 export default function Texture() {
     return (
@@ -16,6 +17,8 @@ export default function Texture() {
             <Scaling />
             <h2>矩阵</h2>
             <Matrix />
+            <h2>3D 矩阵</h2>
+            <Matrix3D />
         </>
     );
 }
