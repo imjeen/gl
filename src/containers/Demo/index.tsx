@@ -11,6 +11,7 @@ import Line from './Line';
 import Triangle from './Triangle';
 import Texture from './Texture';
 import Coordinate from './Coordinate';
+import Matrix from './Matrix';
 import Cube from './Cube';
 
 const ROUTES = [
@@ -48,6 +49,11 @@ const ROUTES = [
         name: 'Coordinate',
         route: '/demo/coordinate',
         component: <Coordinate />,
+    },
+    {
+        name: 'Matrix',
+        route: '/demo/matrix',
+        component: <Matrix />,
     },
     {
         name: 'Cube',
