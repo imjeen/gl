@@ -3,14 +3,14 @@ import React from 'react';
 import { useCanvas } from '@/services/hooks/canvas';
 import { initWebGL } from '@/utils/gl';
 
-export default function Translation() {
+export default function Rotation() {
     const refCanvas = useCanvas<WebGLRenderingContext>(render);
     return <canvas ref={refCanvas} width="1000" height="1000" />;
 }
 
 function render(gl: WebGLRenderingContext) {
     drawNormalF(gl);
-    drawTranslateF(gl);
+    drawRotationF(gl);
 }
 
 /**
@@ -91,14 +91,21 @@ function drawNormalF(gl: WebGLRenderingContext) {
     gl.drawArrays(gl.TRIANGLES, 0, 18);
 }
 
-function drawTranslateF(gl: WebGLRenderingContext) {
+function drawRotationF(gl: WebGLRenderingContext) {
     // 顶点着色器: 带有坐标转换（屏幕像素坐标 => 裁剪空间坐标）
     const vertexShader = `
         attribute vec2 a_position;
         uniform vec2 u_resolution; // 设置全局变量：接收自定义画布的分辨率
         uniform vec2 u_translation; // 设置全局变量：接收自定义的平移
+        uniform vec2 u_rotation; // 设置全局变量：接收自定义的旋转角度
         void main () {
-            vec2 position = a_position + u_translation; // 加上平移量
+            // 旋转位置
+            vec2 rotatedPosition = vec2(
+                a_position.x * u_rotation.y + a_position.y * u_rotation.x,
+                a_position.y * u_rotation.y - a_position.x * u_rotation.x);
+
+            // 加上平移量
+            vec2 position = rotatedPosition + u_translation; 
 
             vec2 clipSpace =  (position / u_resolution) * 2.0 - 1.0;
             gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1); // 左上角为原点
@@ -163,10 +170,13 @@ function drawTranslateF(gl: WebGLRenderingContext) {
     //------------------------------------------
     // 平移F
     (() => {
-        const translation = [400, 400];
+        const translation = [400, 400],
+            rotation = [-0.5, 1]; // -1, 1
         const u_translation = gl.getUniformLocation(program, 'u_translation');
-        // 设置平移
-        gl.uniform2fv(u_translation, translation);
+        const u_rotation = gl.getUniformLocation(program, 'u_rotation');
+
+        gl.uniform2fv(u_translation, translation); // 设置平移
+        gl.uniform2fv(u_rotation, rotation); // 设置旋转
         gl.drawArrays(gl.TRIANGLES, 0, 18);
     })();
 }

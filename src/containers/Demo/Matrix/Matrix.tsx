@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useCanvas } from '@/services/hooks/canvas';
 import { initWebGL } from '@/utils/gl';
+import { m3 } from '@/utils/matrix';
 
 export default function Translation() {
     const refCanvas = useCanvas<WebGLRenderingContext>(render);
@@ -96,11 +97,13 @@ function drawTranslateF(gl: WebGLRenderingContext) {
     const vertexShader = `
         attribute vec2 a_position;
         uniform vec2 u_resolution; // 设置全局变量：接收自定义画布的分辨率
-        uniform vec2 u_translation; // 设置全局变量：接收自定义的平移
+        uniform mat3 u_matrix; // 设置全局变量：接收自定义公矩阵
         void main () {
-            vec2 position = a_position + u_translation; // 加上平移量
+            vec2 position = (u_matrix * vec3(a_position, 1)).xy; // 将位置乘以矩阵
 
-            vec2 clipSpace =  (position / u_resolution) * 2.0 - 1.0;
+            vec2 zeroToOne = position / u_resolution; // 从像素坐标转换到 0.0 到 1.0
+            vec2 zeroToTwo = zeroToOne * 2.0; // 再把 0->1 转换 0->2
+            vec2 clipSpace = zeroToTwo - 1.0; // 把 0->2 转换到 -1->+1 (裁剪空间)
             gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1); // 左上角为原点
         }  
     `;
@@ -163,10 +166,48 @@ function drawTranslateF(gl: WebGLRenderingContext) {
     //------------------------------------------
     // 平移F
     (() => {
-        const translation = [400, 400];
-        const u_translation = gl.getUniformLocation(program, 'u_translation');
-        // 设置平移
-        gl.uniform2fv(u_translation, translation);
+        const translation = [500, 150],
+            angle = 0,
+            scale = [1, 1];
+        // 计算矩阵
+        const translationMatrix = m3.translation(translation[0], translation[1]),
+            rotationMatrix = m3.rotation(angle),
+            scaleMatrix = m3.scaling(scale[0], scale[1]);
+        // 矩阵相乘
+        let matrix = m3.multiply(translationMatrix, rotationMatrix);
+        matrix = m3.multiply(matrix, scaleMatrix);
+        // 设置矩阵
+        const u_matrix = gl.getUniformLocation(program, 'u_matrix');
+        gl.uniformMatrix3fv(u_matrix, false, matrix);
+
+        // 绘制
         gl.drawArrays(gl.TRIANGLES, 0, 18);
+    })();
+
+    //------------------------------------------
+    // 多次平移F
+    (() => {
+        const translation = [100, 150],
+            angle = 0,
+            scale = [1, 1];
+        // 计算矩阵
+        const translationMatrix = m3.translation(translation[0], translation[1]),
+            rotationMatrix = m3.rotation(angle),
+            scaleMatrix = m3.scaling(scale[0], scale[1]);
+
+        let matrix = m3.identity(); // 初始矩阵
+
+        const u_matrix = gl.getUniformLocation(program as WebGLProgram, 'u_matrix');
+        for (let i = 0; i < 4; i++) {
+            matrix = m3.multiply(matrix, translationMatrix);
+            matrix = m3.multiply(matrix, rotationMatrix);
+            matrix = m3.multiply(matrix, scaleMatrix);
+            // 设置颜色
+            gl.uniform4fv(u_color, [Math.random(), Math.random(), Math.random(), 1]);
+            // 设置矩阵
+            gl.uniformMatrix3fv(u_matrix, false, matrix);
+            // 绘制
+            gl.drawArrays(gl.TRIANGLES, 0, 18);
+        }
     })();
 }
