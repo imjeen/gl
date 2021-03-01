@@ -13,6 +13,7 @@ import Texture from './Texture';
 import Coordinate from './Coordinate';
 import Matrix from './Matrix';
 import Cube from './Cube';
+import Animation from "./Animation";
 
 const ROUTES = [
     {
@@ -59,6 +60,11 @@ const ROUTES = [
         name: 'Cube',
         route: '/demo/cube',
         component: <Cube />,
+    },
+    {
+        name: 'Animation',
+        route: '/demo/animation',
+        component: <Animation />,
     },
 ];
 
