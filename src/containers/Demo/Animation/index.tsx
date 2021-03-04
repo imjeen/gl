@@ -120,6 +120,8 @@ function drawMatrix(
     matrix = m4.multiply(matrix, rotationYMatrix);
     matrix = m4.multiply(matrix, rotationZMatrix);
     matrix = m4.multiply(matrix, scaleMatrix);
+    // F 的中心
+    matrix = m4.multiply(matrix, m4.translation(-50, -75, -15));
 
     gl.uniformMatrix4fv(u_matrix, false, matrix);
 
