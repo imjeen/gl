@@ -17,7 +17,7 @@ import Animation from "./Animation";
 
 const ROUTES = [
     {
-        name: '全部',
+        name: 'All',
         route: '/demo',
         component: null,
     },

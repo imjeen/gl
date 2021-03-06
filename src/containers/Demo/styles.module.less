@@ -1,12 +1,18 @@
+/* prettier-ignore */
+@MAX-WIDTH: 800PX;
+
 .navBar {
     position: fixed;
     width: 100%;
     position: sticky;
     top: 0;
     z-index: 200;
+    max-width: @MAX-WIDTH;
+    margin: 0 auto;
 }
 
 div.drawer {
+    max-width: @MAX-WIDTH;
     position: fixed;
     z-index: 100;
     top: 0;
