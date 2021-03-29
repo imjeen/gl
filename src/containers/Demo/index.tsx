@@ -13,7 +13,7 @@ import Texture from './Texture';
 import Coordinate from './Coordinate';
 import Matrix from './Matrix';
 import Cube from './Cube';
-import Animation from "./Animation";
+import Animation from './Animation';
 
 const ROUTES = [
     {
